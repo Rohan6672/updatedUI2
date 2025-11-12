@@ -504,12 +504,19 @@ def init_state() -> None:
 
 
 def render_header(active_view: str) -> None:
+    # Determine title based on active view
+    if active_view == "Sephora Trends Dashboard":
+        title = "Sephora Trends Dashboard"
+    elif active_view == "Trend Discovery":
+        title = "Trend Discovery"
+    else:
+        title = active_view  # Fallback to the view name itself
+
     st.markdown(
         dedent(
             f"""
             <div style="display:flex; flex-wrap:wrap; margin-bottom:1.5rem;">
-                <div style="font-size:2rem; font-weight:700; margin-right:1rem;">Sephora Trends Dashboard</div>
-                <div style="font-size:1rem; color:#666;">{active_view}</div>
+                <div style="font-size:2rem; font-weight:700; margin-right:1rem;">{title}</div>
             </div>
             """
         ),
@@ -695,83 +702,28 @@ def render_full_detail_view(trend: Trend) -> None:
     with tab1:
         st.markdown("### 📊 Insights")
 
-        # Category Selection
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.markdown("**Select Category**")
-            categories = ["Skincare", "Makeup", "Hair", "Fragrance", "Bath & Body", "Tools & Brushes", "Men", "Gifts", "Mini Size"]
-            selected_category = st.selectbox(
-                "Choose a category",
-                categories,
-                key=f"category_{trend['id']}"
-            )
-
-        with col2:
-            st.markdown("**Select Sub-Category**")
-            if selected_category:
-                # Define subcategories based on selected category
-                subcategory_map = {
-                    "Skincare": ["Moisturizers", "Cleansers", "Serums", "Masks", "Sunscreen"],
-                    "Makeup": ["Foundation", "Lipstick", "Eyeshadow", "Mascara", "Blush"],
-                    "Hair": ["Shampoo", "Conditioner", "Styling", "Treatment", "Tools"],
-                    "Fragrance": ["Perfume", "Cologne", "Body Mist", "Rollerballs"],
-                    "Bath & Body": ["Body Wash", "Lotion", "Scrubs", "Bath Salts"],
-                    "Tools & Brushes": ["Makeup Brushes", "Applicators", "Sponges", "Tools"],
-                    "Men": ["Grooming", "Skincare", "Fragrance", "Hair Care"],
-                    "Gifts": ["Gift Sets", "Value Sets", "Limited Edition"],
-                    "Mini Size": ["Travel Size", "Deluxe Samples", "Minis"]
-                }
-                subcategories = subcategory_map.get(selected_category, ["N/A"])
-                selected_subcategory = st.selectbox(
-                    "Select subcategory",
-                    subcategories,
-                    key=f"subcategory_{trend['id']}"
-                )
-            else:
-                st.selectbox(
-                    "Select category first",
-                    [""],
-                    disabled=True,
-                    key=f"subcategory_disabled_{trend['id']}"
-                )
-
+        # Top Categories Section
+        st.markdown("#### Top Categories")
         st.markdown("")
+        categories_list = ["Skincare", "Makeup", "Hair Care", "Fragrance", "Body Care"]
+        categories_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 20px;">'
+        for cat in categories_list:
+            categories_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{cat}</span>'
+        categories_html += '</div>'
+        st.markdown(categories_html, unsafe_allow_html=True)
+
         st.markdown("---")
 
-        # Category Performance Section
-        st.markdown("### Category Performance")
+        # Top Sub-Categories Section
+        st.markdown("#### Top Sub-Categories")
         st.markdown("")
+        subcategories_list = ["Moisturizers", "Lipstick", "Serums", "Shampoo", "Foundation"]
+        subcategories_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 20px;">'
+        for subcat in subcategories_list:
+            subcategories_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{subcat}</span>'
+        subcategories_html += '</div>'
+        st.markdown(subcategories_html, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.markdown(
-                """
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-                    <div style="color: #888; font-size: 14px; margin-bottom: 8px;">Sales Volume YTD</div>
-                    <div style="color: #000; font-size: 36px; font-weight: 700;">1.2M</div>
-                    <div style="color: #666; font-size: 13px; margin-top: 8px;">Units sold year-to-date</div>
-                    <div style="color: #28a745; font-size: 14px; font-weight: 600; margin-top: 5px;">+18.5% vs last year</div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        with col2:
-            st.markdown(
-                """
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-                    <div style="color: #888; font-size: 14px; margin-bottom: 8px;">Sales (Dollars) YTD</div>
-                    <div style="color: #000; font-size: 36px; font-weight: 700;">$24.8M</div>
-                    <div style="color: #666; font-size: 13px; margin-top: 8px;">Revenue year-to-date</div>
-                    <div style="color: #28a745; font-size: 14px; font-weight: 600; margin-top: 5px;">+22.3% vs last year</div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        st.markdown("")
         st.markdown("---")
 
         # Associated Sephora Products
@@ -847,6 +799,25 @@ def render_full_detail_view(trend: Trend) -> None:
                 ingredients_html += f'<span style="background: white; border: 1px solid #ddd; padding: 6px 12px; border-radius: 16px; font-size: 13px; color: #000;">{ingredient}</span>'
             ingredients_html += '</div>'
             st.markdown(ingredients_html, unsafe_allow_html=True)
+
+        st.markdown("---")
+
+        # Key Insights Section
+        st.markdown("#### Key Insights")
+        st.markdown("")
+
+        # Sample insights - these would come from the trend data in production
+        insights = [
+            "This trend shows strong growth in the 18-34 demographic",
+            "High engagement rates on TikTok and Instagram",
+            "Associated products see 35% increase in searches",
+            "Peak interest during Q4 holiday shopping season"
+        ]
+
+        for insight in insights:
+            st.markdown(f"• {insight}")
+
+        st.markdown("")
 
     with tab2:
         st.markdown("### 📱 Social Media")
@@ -936,26 +907,130 @@ def render_full_detail_view(trend: Trend) -> None:
 
     with tab4:
         st.markdown("### 👨‍⚕️ Expert Notes")
-        st.write(expert_notes)
+        st.markdown("")
+
+        # Display existing expert notes if available
+        if expert_notes and expert_notes != "No expert notes available yet.":
+            st.markdown("#### Existing Notes")
+            st.markdown(expert_notes)
+            st.markdown("---")
+
+        # Add new expert note form
+        st.markdown("#### Add New Note")
+        st.markdown("")
+
+        # Name input field
+        st.markdown("**Name** *")
+        expert_name = st.text_input(
+            "Enter your name",
+            key=f"expert_name_{trend['id']}",
+            placeholder="Enter your name...",
+            label_visibility="collapsed"
+        )
+
+        st.markdown("")
+
+        # Expert note textarea
+        st.markdown("**Add Expert Note** *")
+        expert_note = st.text_area(
+            "Share your insights about this trend",
+            key=f"expert_note_{trend['id']}",
+            placeholder="Share your insights about this trend...",
+            height=120,
+            label_visibility="collapsed"
+        )
+
+        st.markdown("")
+
+        # Save button
+        if st.button("Save Note", key=f"save_note_{trend['id']}", use_container_width=False):
+            if not expert_name or not expert_note:
+                st.warning("Please fill in both Name and Expert Note fields.")
+            else:
+                st.success(f"Note saved successfully from {expert_name}!")
+                # In production, this would save to a database
+                st.info("Note: In production, this note would be saved to the database.")
 
     with tab5:
         st.markdown("### 📈 Performance")
-        if trend.get("performance"):
-            perf = trend["performance"]
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Revenue Impact", perf.get("revenue_impact", "N/A"))
-                st.metric("Conversion Rate", perf.get("conversion_rate", "N/A"))
-            with col2:
-                st.markdown("**Demographic:**")
-                st.write(perf.get("demographic", "N/A"))
+        st.markdown("")
 
-            if perf.get("top_products"):
-                st.markdown("**Top Products:**")
-                for product in perf["top_products"]:
-                    st.write(f"• {product}")
-        else:
-            st.write("No performance data available")
+        # Category Selection Dropdowns
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("**Select Category**")
+            categories = ["Skincare", "Makeup", "Hair", "Fragrance", "Bath & Body", "Tools & Brushes", "Men", "Gifts", "Mini Size"]
+            selected_category = st.selectbox(
+                "Choose a category",
+                categories,
+                key=f"perf_category_{trend['id']}",
+                label_visibility="collapsed"
+            )
+
+        with col2:
+            st.markdown("**Select Sub-Category**")
+            if selected_category:
+                # Define subcategories based on selected category
+                subcategory_map = {
+                    "Skincare": ["Moisturizers", "Cleansers", "Serums", "Masks", "Sunscreen"],
+                    "Makeup": ["Foundation", "Lipstick", "Eyeshadow", "Mascara", "Blush"],
+                    "Hair": ["Shampoo", "Conditioner", "Styling", "Treatment", "Tools"],
+                    "Fragrance": ["Perfume", "Cologne", "Body Mist", "Rollerballs"],
+                    "Bath & Body": ["Body Wash", "Lotion", "Scrubs", "Bath Salts"],
+                    "Tools & Brushes": ["Makeup Brushes", "Applicators", "Sponges", "Tools"],
+                    "Men": ["Grooming", "Skincare", "Fragrance", "Hair Care"],
+                    "Gifts": ["Gift Sets", "Value Sets", "Limited Edition"],
+                    "Mini Size": ["Travel Size", "Deluxe Samples", "Minis"]
+                }
+                subcategories = subcategory_map.get(selected_category, ["N/A"])
+                selected_subcategory = st.selectbox(
+                    "Select subcategory",
+                    subcategories,
+                    key=f"perf_subcategory_{trend['id']}",
+                    label_visibility="collapsed"
+                )
+            else:
+                st.selectbox(
+                    "Select category first",
+                    [""],
+                    disabled=True,
+                    key=f"perf_subcategory_disabled_{trend['id']}",
+                    label_visibility="collapsed"
+                )
+
+        st.markdown("")
+        st.markdown("")
+
+        # Category Performance Metrics
+        st.markdown("#### Category Performance")
+        st.markdown("")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown(
+                """
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <div style="color: #888; font-size: 14px; margin-bottom: 8px;">Sales Volume YTD</div>
+                    <div style="color: #000; font-size: 36px; font-weight: 700;">1.2M</div>
+                    <div style="color: #666; font-size: 13px; margin-top: 8px;">Units sold year-to-date</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col2:
+            st.markdown(
+                """
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <div style="color: #888; font-size: 14px; margin-bottom: 8px;">Sales (Dollars) YTD</div>
+                    <div style="color: #000; font-size: 36px; font-weight: 700;">$24.8M</div>
+                    <div style="color: #666; font-size: 13px; margin-top: 8px;">Revenue year-to-date</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
     st.markdown("")
 
@@ -989,6 +1064,8 @@ def render_full_detail_view(trend: Trend) -> None:
 
 
 def render_trends_view() -> None:
+    render_header("Sephora Trends Dashboard")
+
     trends = st.session_state["all_trends"]
 
     # Category tabs using pills layout
@@ -1192,7 +1269,7 @@ def handle_web_search() -> None:
 
 
 def render_discover_view() -> None:
-    st.markdown("# Trend Discovery")
+    render_header("Trend Discovery")
     st.write("Search for emerging beauty trends or discover what's next in the industry")
 
     st.markdown("")  # Add spacing
@@ -1289,12 +1366,12 @@ def main() -> None:
     if st.session_state.get("detail_view_trend") is not None:
         render_full_detail_view(st.session_state["detail_view_trend"])
     else:
-        view = st.sidebar.radio("View", ("Sephora Trend Discovery", "Trend Discovery"), index=0)
+        view = st.sidebar.radio("View", ("Sephora Trends Dashboard", "Trend Discovery"), index=0)
 
         st.sidebar.markdown("---")
         st.sidebar.caption(f"Total Trends: {len(st.session_state.get('all_trends', []))}")
 
-        if view == "Sephora Trend Discovery":
+        if view == "Sephora Trends Dashboard":
             render_trends_view()
         else:
             render_discover_view()
