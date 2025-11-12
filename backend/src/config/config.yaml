@@ -1,0 +1,157 @@
+# Application Configuration
+logging:
+  logger_path: "src/logs/app_logs.log"
+
+output_folder:
+  OUTPUT_DIR:  "src/data/outputs"
+
+prompt_service:
+  path: "src/prompts/prompts.yml"
+
+llm_config:
+  critic_model: "gemini-1.5-pro"
+  worker_model: "gemini-1.5-flash"
+
+# database: "azure_sql"
+
+# error_messages:
+#   technical_issue: "I'm sorry but I am experiencing technical issues. You may try again after some time or initiate a new chat."
+
+# email_notification:
+#   subject: "Audit Activity Update: {audit_title}"
+#   email_template: |
+#     <p>Dear Auditor,</p>
+#     <p>Your assignment for <b>{audit_title}</b> ({start_date} to {end_date}) has been processed.</p>
+#     <p>Please check your schedule for details.</p>
+#     <p>Best regards,<br/>The Audit Management Team</p>
+
+# verify_ssl: false
+
+# # LLM Generic Configuration
+# llmgeneric:
+#   clarification_context:
+#     api: "https://apim-na.qa.mypepsico.com/cgf/pepgenx"
+#     generation_model: "gpt-4.1"
+#     llm_retries: 3
+#     clarification_agent_retries: 2
+#     backoff_factor: 2.0
+#     params:
+#       max_tokens: 1300
+#       temperature: 0.2
+#       custom_prompt: "LLM input prompt placeholder"
+
+#   intent_classifier:
+#     api: "https://apim-na.qa.mypepsico.com/cgf/pepgenx"
+#     generation_model: "gpt-4.1"
+#     llm_retries: 3
+#     intent_agent_retries: 3
+#     backoff_factor: 2.0
+#     params:
+#       max_tokens: 1300
+#       temperature: 0.2
+#       custom_prompt: "LLM input prompt placeholder"
+
+#   query_generator:
+#     api: "https://apim-na.qa.mypepsico.com/cgf/pepgenx"
+#     generation_model: "gpt-4.1"
+#     llm_retries: 3
+#     query_generation_agent_retries: 3
+#     backoff_factor: 2.0
+#     params:
+#       max_tokens: 1300
+#       temperature: 0.2
+#       custom_prompt: "LLM input prompt placeholder"
+
+#   result_summarizer:
+#     api: "https://apim-na.qa.mypepsico.com/cgf/pepgenx"
+#     generation_model: "gpt-4.1"
+#     llm_retries: 3
+#     summarizer_agent_retries: 3
+#     backoff_factor: 2.0
+#     params:
+#       max_tokens: 1300
+#       temperature: 0.2
+#       custom_prompt: "LLM input prompt placeholder"
+
+#   team_management:
+#     api: "https://apim-na.qa.mypepsico.com/cgf/pepgenx"
+#     generation_model: "gpt-4.1"
+#     llm_retries: 3
+#     team_management_agent_retries: 5
+#     backoff_factor: 2.0
+#     params:
+#       max_tokens: 1300
+#       temperature: 0.2
+#       custom_prompt: "LLM input prompt placeholder"
+
+# # Database Reference Configuration
+# REFERENCE_CONFIG:
+#   skills:
+#     table: "audit.interests"
+#     column: "skills_name"
+  
+#   languages:
+#     table: "audit.languages"
+#     column: "languages_name"
+  
+#   locations:
+#     table: "audit.BulkUserProfiles"
+#     column: "BulkUserProfiles_country"
+  
+#   activity_title:
+#     table: "audit.audit"
+#     column: "activity_title"
+  
+#   auditor_names:
+#     table: "audit.BulkUserProfiles"
+#     column: "bulkuserprofiles_name"
+  
+#   auditor_time_zones:
+#     table: "audit.BulkUserProfiles"
+#     column: "bulkuserprofiles_timezone"
+  
+#   experiences:
+#     table: "audit.experiences"
+#     column: "experiences_name"
+  
+#   educations:
+#     table: "audit.educations"
+#     column: "educations_title"
+  
+#   positions:
+#     table: "audit.positions"
+#     column: "positions_title"
+  
+#   preferences:
+#     table: "audit.preferences"
+#     column: "audit_preferences"
+  
+#   projects:
+#     table: "audit.projects"
+#     column: "projects_title"
+  
+#   sme:
+#     table: "audit.sme"
+#     column: "sme"
+
+# # Application Settings
+# query_retry_count: 3
+# ontology_path: "src/data/processing_data/ontology.json"
+# session_title_max_length: 30
+# default_llm_response: "I'm unable to respond to your query right now, please try again later or ask a different question."
+
+# # Blob Storage Configuration
+# blob_storage:
+#   container_name: "audit-ai"
+#   folder_path: "rawdata/"
+
+# blob_files:
+#   auditor_file: "CA in MyDevelopment_PQ.xlsx"
+#   sme: "SME.csv"
+#   my_preference: "myPreferences.csv"
+#   weekly_file: "AB_AUDIT_HEADER_forAI.xlsx"
+#   holiday_calendar: "CA Holidays Calendar.csv"
+#   director_details: "director_details.xlsx"
+
+# # Authentication
+# OKTA_METADATA_JSON: "https://pepsico.oktapreview.com/oauth2/default/.well-known/oauth-authorization-server"
