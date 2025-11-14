@@ -702,27 +702,28 @@ def render_full_detail_view(trend: Trend) -> None:
     with tab1:
         st.markdown("### 📊 Insights")
 
-        # Top Categories Section
-        st.markdown("#### Top Categories")
-        st.markdown("")
-        categories_list = ["Skincare", "Makeup", "Hair Care", "Fragrance", "Body Care"]
-        categories_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 20px;">'
-        for cat in categories_list:
-            categories_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{cat}</span>'
-        categories_html += '</div>'
-        st.markdown(categories_html, unsafe_allow_html=True)
+        # Top Categories and Sub-Categories Section - Horizontal Layout
+        col1, col2 = st.columns(2)
 
-        st.markdown("---")
+        with col1:
+            st.markdown("#### Top Categories")
+            st.markdown("")
+            categories_list = ["Skincare", "Makeup", "Hair Care", "Fragrance", "Body Care"]
+            categories_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 20px;">'
+            for cat in categories_list:
+                categories_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{cat}</span>'
+            categories_html += '</div>'
+            st.markdown(categories_html, unsafe_allow_html=True)
 
-        # Top Sub-Categories Section
-        st.markdown("#### Top Sub-Categories")
-        st.markdown("")
-        subcategories_list = ["Moisturizers", "Lipstick", "Serums", "Shampoo", "Foundation"]
-        subcategories_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 20px;">'
-        for subcat in subcategories_list:
-            subcategories_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{subcat}</span>'
-        subcategories_html += '</div>'
-        st.markdown(subcategories_html, unsafe_allow_html=True)
+        with col2:
+            st.markdown("#### Top Sub-Categories")
+            st.markdown("")
+            subcategories_list = ["Moisturizers", "Lipstick", "Serums", "Shampoo", "Foundation"]
+            subcategories_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 20px;">'
+            for subcat in subcategories_list:
+                subcategories_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{subcat}</span>'
+            subcategories_html += '</div>'
+            st.markdown(subcategories_html, unsafe_allow_html=True)
 
         st.markdown("---")
 
@@ -800,25 +801,6 @@ def render_full_detail_view(trend: Trend) -> None:
             ingredients_html += '</div>'
             st.markdown(ingredients_html, unsafe_allow_html=True)
 
-        st.markdown("---")
-
-        # Key Insights Section
-        st.markdown("#### Key Insights")
-        st.markdown("")
-
-        # Sample insights - these would come from the trend data in production
-        insights = [
-            "This trend shows strong growth in the 18-34 demographic",
-            "High engagement rates on TikTok and Instagram",
-            "Associated products see 35% increase in searches",
-            "Peak interest during Q4 holiday shopping season"
-        ]
-
-        for insight in insights:
-            st.markdown(f"• {insight}")
-
-        st.markdown("")
-
     with tab2:
         st.markdown("### 📱 Social Media")
         if trend.get("socialMedia"):
@@ -829,25 +811,21 @@ def render_full_detail_view(trend: Trend) -> None:
 
             with col1:
                 st.markdown("#### TikTok")
-                # Parse the numbers or use defaults
-                tiktok_views = social.get("tiktok", "N/A")
-                st.metric("Views", tiktok_views)
-                st.metric("Likes", "4.2M")
-                st.metric("Shares", "892K")
+                st.metric("Influencer Count", "127")
+                st.metric("Total Followers", "82M")
+                st.metric("Est. Reach", "47M")
 
             with col2:
                 st.markdown("#### Instagram")
-                instagram_views = social.get("instagram", "N/A")
-                st.metric("Views", instagram_views)
-                st.metric("Likes", "3.1M")
-                st.metric("Shares", "654K")
+                st.metric("Influencer Count", "89")
+                st.metric("Total Followers", "54M")
+                st.metric("Est. Reach", "31M")
 
             with col3:
                 st.markdown("#### YouTube")
-                youtube_views = social.get("youtube", "N/A")
-                st.metric("Views", youtube_views)
-                st.metric("Likes", "1.2M")
-                st.metric("Shares", "287K")
+                st.metric("Influencer Count", "31")
+                st.metric("Total Followers", "20M")
+                st.metric("Est. Reach", "11M")
 
             st.markdown("")
             st.markdown("---")
@@ -907,13 +885,6 @@ def render_full_detail_view(trend: Trend) -> None:
 
     with tab4:
         st.markdown("### 👨‍⚕️ Expert Notes")
-        st.markdown("")
-
-        # Display existing expert notes if available
-        if expert_notes and expert_notes != "No expert notes available yet.":
-            st.markdown("#### Existing Notes")
-            st.markdown(expert_notes)
-            st.markdown("---")
 
         # Add new expert note form
         st.markdown("#### Add New Note")
@@ -951,56 +922,19 @@ def render_full_detail_view(trend: Trend) -> None:
                 # In production, this would save to a database
                 st.info("Note: In production, this note would be saved to the database.")
 
+        st.markdown("")
+        st.markdown("---")
+
+        # Display existing expert notes if available
+        st.markdown("#### Existing Notes")
+
+        if expert_notes and expert_notes != "No expert notes available yet.":
+            st.markdown(expert_notes)
+        else:
+            st.write("No expert notes available yet.")
+
     with tab5:
         st.markdown("### 📈 Performance")
-        st.markdown("")
-
-        # Category Selection Dropdowns
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.markdown("**Select Category**")
-            categories = ["Skincare", "Makeup", "Hair", "Fragrance", "Bath & Body", "Tools & Brushes", "Men", "Gifts", "Mini Size"]
-            selected_category = st.selectbox(
-                "Choose a category",
-                categories,
-                key=f"perf_category_{trend['id']}",
-                label_visibility="collapsed"
-            )
-
-        with col2:
-            st.markdown("**Select Sub-Category**")
-            if selected_category:
-                # Define subcategories based on selected category
-                subcategory_map = {
-                    "Skincare": ["Moisturizers", "Cleansers", "Serums", "Masks", "Sunscreen"],
-                    "Makeup": ["Foundation", "Lipstick", "Eyeshadow", "Mascara", "Blush"],
-                    "Hair": ["Shampoo", "Conditioner", "Styling", "Treatment", "Tools"],
-                    "Fragrance": ["Perfume", "Cologne", "Body Mist", "Rollerballs"],
-                    "Bath & Body": ["Body Wash", "Lotion", "Scrubs", "Bath Salts"],
-                    "Tools & Brushes": ["Makeup Brushes", "Applicators", "Sponges", "Tools"],
-                    "Men": ["Grooming", "Skincare", "Fragrance", "Hair Care"],
-                    "Gifts": ["Gift Sets", "Value Sets", "Limited Edition"],
-                    "Mini Size": ["Travel Size", "Deluxe Samples", "Minis"]
-                }
-                subcategories = subcategory_map.get(selected_category, ["N/A"])
-                selected_subcategory = st.selectbox(
-                    "Select subcategory",
-                    subcategories,
-                    key=f"perf_subcategory_{trend['id']}",
-                    label_visibility="collapsed"
-                )
-            else:
-                st.selectbox(
-                    "Select category first",
-                    [""],
-                    disabled=True,
-                    key=f"perf_subcategory_disabled_{trend['id']}",
-                    label_visibility="collapsed"
-                )
-
-        st.markdown("")
-        st.markdown("")
 
         # Category Performance Metrics
         st.markdown("#### Category Performance")
@@ -1031,36 +965,6 @@ def render_full_detail_view(trend: Trend) -> None:
                 """,
                 unsafe_allow_html=True
             )
-
-    st.markdown("")
-
-    # Top Categories and Sub-Categories
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("### Top Categories")
-        categories = trend.get("categories", [])
-        if categories:
-            cats_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">'
-            for cat in categories[:4]:
-                cats_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{cat}</span>'
-            cats_html += '</div>'
-            st.markdown(cats_html, unsafe_allow_html=True)
-        else:
-            st.write("No categories available")
-
-    with col2:
-        st.markdown("### Top Sub-Categories")
-        # Use performance top products as subcategories if available
-        subcats = trend.get("performance", {}).get("top_products", trend.get("categories", []))
-        if subcats:
-            subcats_html = '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">'
-            for subcat in subcats[:4]:
-                subcats_html += f'<span style="background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 16px; font-size: 14px; color: #000;">{subcat}</span>'
-            subcats_html += '</div>'
-            st.markdown(subcats_html, unsafe_allow_html=True)
-        else:
-            st.write("No sub-categories available")
 
 
 def render_trends_view() -> None:
